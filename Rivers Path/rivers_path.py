@@ -9,35 +9,48 @@
 #      width: widht of the land (matrix)
 #      current_h: current node height position
 #      current_w: current node widht position
-def search_rivers(land, height, width, current_h, current_w,):
+def search_rivers(land, height, width, current_h, current_w, path=''):
 
     current_node = land[current_h][current_w]
+    new_path = path + "(" + str(current_h) + "," + str(current_w) + ") "
 
     # verifying if the current position has arrived to an ocean
-    if(current_h == 0 or current_h == (land_height - 1) or current_w == 0 or
-        current_w == (land_width - 1)):
-        print("Arrived to a Ocean, well on the edge which means that :)")
+    if(current_h == 0 or current_h == (height - 1) or current_w == 0 or
+        current_w == (width - 1)):
+        print(new_path)
+
+        # verify if it ended on Pacific or Atlantic ocean
+        if(current_h == 0 or current_w == 0):
+            global pacific_rivers
+            pacific_rivers += 1
+        else:
+            global atlantic_rivers
+            atlantic_rivers += 1
     else:
         ''' verifying if from the current position you can move to other (lower)
             remember only up, right, right, down and left directions are allowed
         '''
         # up
         if(current_h > 0 and current_node > land[current_h - 1][current_w]):
-            pass
+            search_rivers(land, height, width, current_h - 1, current_w,
+                new_path)
 
         # right
         if(current_w < (width - 1) and current_node > land[current_h]
             [current_w + 1]):
-            pass
+            search_rivers(land, height, width, current_h, current_w + 1,
+                new_path)
 
         # down
         if(current_h < (height - 1) and current_node > land[current_h + 1]
             [current_w]):
-            pass
+            search_rivers(land, height, width, current_h + 1, current_w,
+                new_path)
 
         # left
         if(current_w > 0 and current_node > land[current_h][current_w - 1]):
-            pass
+            search_rivers(land, height, width, current_h, current_w - 1,
+                new_path)
 
 
 if __name__ == "__main__":
@@ -55,5 +68,12 @@ if __name__ == "__main__":
             [2, 2, 8, 5, 4, 2, 12],
             [45, 9, 5, 2, 78, 0, 2]]
 
+    pacific_rivers = atlantic_rivers = 0
+
+    # call to find all possible rivers which end on the sea
     search_rivers(land, land_height, land_width, water_position_h,
         water_position_w,)
+
+    # print the number or fivers ending on each ocean
+    print(pacific_rivers)
+    print(atlantic_rivers)
