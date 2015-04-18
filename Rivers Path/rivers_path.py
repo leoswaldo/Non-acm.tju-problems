@@ -30,25 +30,37 @@ def search_rivers(land, height, width, current_h, current_w, path=''):
         ''' verifying if from the current position you can move to other (lower)
             remember only up, right, right, down and left directions are allowed
         '''
+
+        '''NOTE:
+            If we want this algorithm to work with values not only lower if not
+            also equal, then we need to modify the current node in the land, it
+            wont affect the flow of the function because we access to the
+            current node value through the variable current_node, to do this we
+            only need to modify the value by adding one or anything to make it
+            bigger that its initial value
+        '''
+        # in case an equal value and we need to modify it and pass as argument
+        land[current_h][current_w] += 1
+
         # up
-        if(current_h > 0 and current_node > land[current_h - 1][current_w]):
+        if(current_h > 0 and current_node >= land[current_h - 1][current_w]):
             search_rivers(land, height, width, current_h - 1, current_w,
                 new_path)
 
         # right
-        if(current_w < (width - 1) and current_node > land[current_h]
+        if(current_w < (width - 1) and current_node >= land[current_h]
             [current_w + 1]):
             search_rivers(land, height, width, current_h, current_w + 1,
                 new_path)
 
         # down
-        if(current_h < (height - 1) and current_node > land[current_h + 1]
+        if(current_h < (height - 1) and current_node >= land[current_h + 1]
             [current_w]):
             search_rivers(land, height, width, current_h + 1, current_w,
                 new_path)
 
         # left
-        if(current_w > 0 and current_node > land[current_h][current_w - 1]):
+        if(current_w > 0 and current_node >= land[current_h][current_w - 1]):
             search_rivers(land, height, width, current_h, current_w - 1,
                 new_path)
 
